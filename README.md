@@ -32,7 +32,7 @@ var (
 
 func main() {
 	var (
-		db	= db.GormInit()
+		db  = db.GormInit()
 		uow = gouow.Init(db) // Initialize unit of work
 		ctx = context.TODO()
 		err error
@@ -64,9 +64,9 @@ func main() {
 // Example function for repository
 func RepositoryFunction(ctx context.Context) error {
 	var (
-		sqlDB	= db
-		tx		= ctx.Value(gouow.TX_KEY)
-		err		error
+		sqlDB = db
+		tx    = ctx.Value(gouow.TX_KEY)
+		err   error
 	)
 
 	if tx != nil {
@@ -132,9 +132,9 @@ func main() {
 // Example function for repository
 func RepositoryFunction(ctx context.Context) error {
 	var (
-		err		error
-		sqlDB	= db
-		tx		= ctx.Value(gouow.TX_KEY)
+		sqlDB = db
+		tx    = ctx.Value(gouow.TX_KEY)
+		err   error
 	)
 
 	if tx != nil {
