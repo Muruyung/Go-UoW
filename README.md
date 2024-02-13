@@ -1,9 +1,3 @@
----
-runme:
-  id: 01HPHEFFGZD78E0TCWAMGWVXS2
-  version: v2.2
----
-
 # Go Unit of Work
 
 This package is an implementation of the unit of work pattern in Golang. Unit of work is a design pattern that is widely used to help manage transactions and maintain consistency in an application. When combined with a clean architecture, this can provide a solid foundation for building scalable and maintainable applications.
