@@ -121,8 +121,7 @@ func main() {
 
 		err = AnotherFunction(ctx) // Call another function
 		if err != nil {
-			_ = gouow.Rollback(err) // It will return error and rollback RepositoryFunction and AnotherFunction
-			return err
+			return err // It will return error and rollback RepositoryFunction and AnotherFunction
 		}
 	})
 	if err != nil {
