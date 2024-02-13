@@ -1,9 +1,3 @@
----
-runme:
-  id: 01HPHEFFGZD78E0TCWAMGWVXS2
-  version: v2.2
----
-
 # Go Unit of Work
 
 This package is an implementation of the unit of work pattern in Golang. Unit of work is a design pattern that is widely used to help manage transactions and maintain consistency in an application. When combined with a clean architecture, this can provide a solid foundation for building scalable and maintainable applications.
@@ -12,7 +6,7 @@ This package is an implementation of the unit of work pattern in Golang. Unit of
 
 The following command is used for install this package into your golang project
 
-```sh {"id":"01HPHEV9G90PX9TPJ213BXQXCJ"}
+```sh
 go get github.com/Muruyung/Go-UoW@latest
 ```
 
@@ -22,7 +16,7 @@ go get github.com/Muruyung/Go-UoW@latest
 
 This implementation is used if you want to customize the placement of new sessions, commits, and rollbacks
 
-```go {"id":"01HPHFAYKN8ADEGSD38EPPNGVX"}
+```go
 package main
 
 import (
@@ -97,7 +91,7 @@ func AnotherFunction(ctx context.Context) error {
 
 This implementation is used if you want to use a simple method
 
-```go {"id":"01HPHGYZPQ2EXZ99C03VSQT0TT"}
+```go
 package main
 
 import (
