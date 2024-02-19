@@ -123,6 +123,8 @@ func main() {
         if err != nil {
             return err // It will return error and rollback RepositoryFunction and AnotherFunction
         }
+
+		return nil // It will return nil and commit all process
     })
     if err != nil {
         return
