@@ -20,71 +20,71 @@ This implementation is used if you want to customize the placement of new sessio
 package main
 
 import (
-	"context"
-	"database/sql"
+    "context"
+    "database/sql"
 
-	"github.com/Muruyung/Go-UoW/gouow" // import gouow package
+    "github.com/Muruyung/Go-UoW/gouow" // import gouow package
 )
 
 var (
-	db *gorm.DB // Example db engine
+    db *gorm.DB // Example db engine
 )
 
 func main() {
-	var (
-		db  = db.GormInit()
-		uow = gouow.Init(db) // Initialize unit of work
-		ctx = context.TODO()
-		err error
-	)
+    var (
+        db  = db.GormInit()
+        uow = gouow.Init(db) // Initialize unit of work
+        ctx = context.TODO()
+        err error
+    )
 
-	err = uow.NewSession(&ctx) // Create new session for start transaction
-	if err != nil {
-		return
-	}
+    err = uow.NewSession(&ctx) // Create new session for start transaction
+    if err != nil {
+        return
+    }
 
-	err = RepositoryFunction(ctx) // Call first function
-	if err != nil {
-		_ = gouow.Rollback(err) // It will rollback RepositoryFunction if there is an error
-		return
-	}
+    err = RepositoryFunction(ctx) // Call first function
+    if err != nil {
+        _ = gouow.Rollback(err) // It will rollback RepositoryFunction if there is an error
+        return
+    }
 
-	err = AnotherFunction(ctx) // Call another function
-	if err != nil {
-		_ = gouow.Rollback(err) // It will rollback RepositoryFunction and AnotherFunction if there is an error
-		return
-	}
+    err = AnotherFunction(ctx) // Call another function
+    if err != nil {
+        _ = gouow.Rollback(err) // It will rollback RepositoryFunction and AnotherFunction if there is an error
+        return
+    }
 
-	err = uow.Commit() // Commit all transaction process
-	if err != nil {
-		return
-	}
+    err = uow.Commit() // Commit all transaction process
+    if err != nil {
+        return
+    }
 }
 
 // Example function for repository
 func RepositoryFunction(ctx context.Context) error {
-	var (
-		sqlDB = db
-		tx    = ctx.Value(gouow.TX_KEY)
-		err   error
-	)
+    var (
+        sqlDB = db
+        tx    = ctx.Value(gouow.TX_KEY)
+        err   error
+    )
 
-	if tx != nil {
-		if dbTx := tx.(*gouow.TX); dbTx.UseTx {
-			sqlDB = dbTx.GormDB()
-		}
-	}
+    if tx != nil {
+        if dbTx := tx.(*gouow.TX); dbTx.UseTx {
+            sqlDB = dbTx.GormDB()
+        }
+    }
 
-	// Implement your repository logic here ...
+    // Implement your repository logic here ...
 
-	return err
+    return err
 }
 
 // Example function for another logic outside of repository logic
 func AnotherFunction(ctx context.Context) error {
-	var err error
-	// Implement your another logic here ...
-	return err
+    var err error
+    // Implement your another logic here ...
+    return err
 }
 ```
 
@@ -96,62 +96,62 @@ This implementation is used if you want to use a simple method
 package main
 
 import (
-	"context"
-	"database/sql"
+    "context"
+    "database/sql"
 
-	"github.com/Muruyung/Go-UoW/gouow" // import gouow package
+    "github.com/Muruyung/Go-UoW/gouow" // import gouow package
 )
 
 var (
-	db *gorm.DB // Example db engine
+    db *gorm.DB // Example db engine
 )
 
 func main() {
-	var (
-		db  = db.GormInit()
-		uow = gouow.Init(db) // Initialize unit of work
-		ctx = context.TODO()
-	)
+    var (
+        db  = db.GormInit()
+        uow = gouow.Init(db) // Initialize unit of work
+        ctx = context.TODO()
+    )
 
-	err := uow.BeginTx(ctx, func(ctxTx context.Context) error {
-		err := RepositoryFunction(ctx) // Call first function
-		if err != nil {
-			return err // It will return error and rollback RepositoryFunction
-		}
+    err := uow.BeginTx(ctx, func(ctxTx context.Context) error {
+        err := RepositoryFunction(ctxTx) // Call first function
+        if err != nil {
+            return err // It will return error and rollback RepositoryFunction
+        }
 
-		err = AnotherFunction(ctx) // Call another function
-		if err != nil {
-			return err // It will return error and rollback RepositoryFunction and AnotherFunction
-		}
-	})
-	if err != nil {
-		return
-	}
+        err = AnotherFunction(ctxTx) // Call another function
+        if err != nil {
+            return err // It will return error and rollback RepositoryFunction and AnotherFunction
+        }
+    })
+    if err != nil {
+        return
+    }
 }
 
 // Example function for repository
 func RepositoryFunction(ctx context.Context) error {
-	var (
-		sqlDB = db
-		tx    = ctx.Value(gouow.TX_KEY)
-		err   error
-	)
+    var (
+        sqlDB = db
+        tx    = ctx.Value(gouow.TX_KEY)
+        err   error
+    )
 
-	if tx != nil {
-		if dbTx := tx.(*gouow.TX); dbTx.UseTx {
-			sqlDB = dbTx.GormDB()
-		}
-	}
+    if tx != nil {
+        if dbTx := tx.(*gouow.TX); dbTx.UseTx {
+            sqlDB = dbTx.GormDB()
+        }
+    }
 
-	// Implement your repository logic here ...
+    // Implement your repository logic here ...
 
-	return err
+    return err
 }
 
 // Example function for another logic outside of repository logic
 func AnotherFunction(ctx context.Context) error {
-	var err error
-	// Implement your another logic here ...
-	return err
+    var err error
+    // Implement your another logic here ...
+    return err
 }
 ```
